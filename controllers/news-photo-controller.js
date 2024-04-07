@@ -6,7 +6,7 @@ const path = require("path");
 
 exports.getPosts = (request, response, next) => {
 	try {
-		const findSPosts = postSchema.find();
+		const findSPosts = newsPhotoSchema.find();
 		findSPosts.exec((err, data) => {
 			response.status(200).json({
 				data,
@@ -23,18 +23,17 @@ exports.getPosts = (request, response, next) => {
 // // add post to DB
 exports.postPost = (request, res, next) => {
 	try {
-		const { id, title, content1, content2, link, userName, date, imgPath, imgName } = request.body;
+		const { id, title, content1, content2, signature, photoFn, date} = request.body;
 		const body = {
 			title: title,
 			content1: content1,
 			content2: content2,
-			link: link,
-			userName: userName,
+			signature: signature,
+			photoFn: photoFn,
 			date: date,
-			imgPath: imgPath,
-			alt: imgName,
+
 		};
-		const newPost = new postSchema(body);
+		const newPost = new newsPhotoSchema(body);
 		newPost.save((err, data) => {
 			if (err) {
 				console.log(err);
@@ -89,21 +88,20 @@ exports.addFile = (request, response, next) => {
 // edit and change data of Post
 exports.putPost = (request, response, next) => {
 	try {
-		const { id, title, content1, content2, link, user, userName, date, imgPath } = request.body;
+		const { id, title, content1, content2,  date,  signature,
+			photoFn, } = request.body;
 
 		const filter = id;
 		const update = {
-			title,
-			content1,
+		 title,
+			 content1,
 			content2,
-			link,
-			user,
-			userName,
-			date,
-			imgPath,
+			 signature,
+			 photoFn,
+		 date,
 		};
 
-		postSchema.findByIdAndUpdate(filter, update, { new: true }, (err, data) => {
+		newsPhotoSchema.findByIdAndUpdate(filter, update, { new: true }, (err, data) => {
 			if (err) {
 				response.status(404).json({
 					message: "brak postu do edycji",
@@ -125,7 +123,7 @@ exports.putPost = (request, response, next) => {
 // delete post
 exports.deletePost = (request, response, next) => {
 	try {
-		postSchema.findByIdAndDelete(request.params.id, (err) => {
+		newsPhotoSchema.findByIdAndDelete(request.params.id, (err) => {
 			if (err) {
 				response.status(404).json({
 					message: "Nie ma postu do usunięcia",

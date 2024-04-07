@@ -10,4 +10,4 @@ const newsPhotoSchema = new Schema({
 	photoFn: { type: String },
 });
 
-module.exports = mongoose.model("NewsPhoto", newsPhotoSchema);
+module.exports = mongoose.model("news", newsPhotoSchema);
